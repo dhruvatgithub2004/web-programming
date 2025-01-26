@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login and Profile</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background: linear-gradient(to bottom right, #3498db, #9b59b6); /* Updated gradient */
+            color: white;
+            overflow: hidden;
+            background-size: cover;
+            background-attachment: fixed;
+            transition: background 1s ease-in-out; /* Smooth background transition */
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200vw;
+            height: 200vh;
+            background-image: url('https://source.unsplash.com/1920x1080/?abstract,geometric,colorful,vibrant,technology');
+            background-repeat: no-repeat;
+            background-size: cover;
+            animation: pan 50s linear infinite, colorChange 10s linear infinite alternate; /* Slower pan, added color change */
+            opacity: 0.35;
+            z-index: -1;
+            filter: blur(3px) brightness(0.7);
+        }
+
+        @keyframes pan {
+            0% { transform: translate(0, 0); }
+            50% { transform: translate(-1%, -0.5%); } /* Even more subtle */
+            100% { transform: translate(0, 0); }
+        }
+
+        @keyframes colorChange { /* Background color change animation */
+            0% { filter: hue-rotate(0deg); }
+            100% { filter: hue-rotate(360deg); }
+        }
+
+        .container {
+            max-width: 420px;
+            margin: 100px auto;
+            padding: 30px;
+            background-color: rgba(255, 255, 255, 0.92);
+            border-radius: 15px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+            color: #333;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.5s ease;
+            backdrop-filter: blur(7px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            opacity: 0; /* Initially hidden */
+            transform: translateY(20px);
+        }
+
+        .container.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .container:hover {
+            transform: scale(1.04);
+            box-shadow: 0 18px 36px rgba(0, 0, 0, 0.35);
+        }
+
+        h1, h2 {
+            text-align: center;
+            color: #d35400;
+            margin-bottom: 25px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.15);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 500;
+            color: #555;
+            transition: color 0.3s;
+        }
+
+        label:hover {
+            color: #e67e22;
+        }
+
+        input[type="text"],
+        input[type="password"] { /* ... (same as before) */ }
+        input[type="text"]:focus,
+        input[type="password"]:focus { /* ... (same as before) */ }
+
+        button { /* ... (same as before) */ }
+        button:hover { /* ... (same as before) */ }
+        button:active {/*...*/}
+
+        .profile-info,
+        .user-info { /* ... (same as before) */ }
+
+        footer {
+            background-color: rgba(52, 73, 94, 0.9);
+            color: white;
+            padding: 18px 0;
+            text-align: center;
+            margin-top: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container show" id="login">
+        <h1>Login</h1>
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+        <button onclick="loginFunc()">Login</button>
+        <p id="error-message" style="color: red;"></p>
+    </div>
+
+    <div class="container" id="userInfo" style="display: none;">
+        <h2>User Information</h2>
+        <div class="user-info"><strong>Name:</strong> <span id="user-name"></span></div>
+        <div class="user-info"><strong>Age:</strong> <span id="user-age">23</span></div>
+        <div class="user-info"><strong>Email:</strong> <span id="user-email">MissKulfi@143</span></div>
+        <button onclick="goToProfile()">Go to Profile</button>
+    </div>
+
+    <div class="container" id="profile" style="display: none;">
+        <h2>Personal Profile</h2>
+        <div class="profile-info"><strong>Username:</strong> <span id="profile-username"></span></div>
+        <div class="profile-info"><strong>Email:</strong> <span id="profile-email">MissKulfi@143</span></div>
+        <div class="profile-info"><strong>Bio:</strong> <span id="profile-bio">Myself Sukruth from Jain University doing assignment1</span></div>
+        <button onclick="logoutFunc()">Logout</button>
+    </div>
+
+    <footer>
+        &copy; 2023 My Website. All rights reserved.
+    </footer>
+
+    <script>
+        function loginFunc() {
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+            const errorMessage = document.getElementById("error-message");
+            const userInfoContainer = document.getElementById("userInfo");
+            const loginContainer = document.getElementById('login');
+
+            if (username === "Dhruv" && password === "Miss Kulfi") {
+                loginContainer.classList.remove('show');
+                setTimeout(() => {
+                     loginContainer.style.display = "none";
+                     userInfoContainer.style.display = "block";
+                     setTimeout(()=>{
+                        userInfoContainer.classList.add('show');
+                     },50);
+                },500);
+
+                document.getElementById("user-name").textContent = username;
+                errorMessage.textContent = "";
+            } else {
+                errorMessage.textContent = "Invalid username or password.";
+            }
+        }
+
+        function goToProfile() {
+            const profileContainer = document.getElementById("profile");
+            const userInfoContainer = document.getElementById("userInfo");
+
+            userInfoContainer.classList.remove('show');
+            setTimeout(()=>{
+                userInfoContainer.style.display = "none";
+                profileContainer.style.display = "block";
+                setTimeout(()=>{
+                    profileContainer.classList.add('show');
+                },50);
+            },500);
+
+            document.getElementById("profile-username").textContent = document.getElementById("username").value;
+        }
+
+        function logoutFunc() {
+            const loginContainer = document.getElementById('login');
+            const profileContainer = document.getElementById("profile");
+
+            profileContainer.classList.remove('show');
+            setTimeout(()=>{
+                profileContainer.style.display = "none";
+                loginContainer.style.display = "block";
+                setTimeout(()=>{
+                    loginContainer.classList.add('show');
+                },50)
+            },500);
+
+            document.getElementById("username").value = "";
+            document.getElementById("password").value = "";
+        }
+    </script>
+
+</body>
+</html>
